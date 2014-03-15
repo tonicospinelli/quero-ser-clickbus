@@ -67,7 +67,17 @@ class CashMachineTest extends \PHPUnit_Framework_TestCase
      * @expectedException \CashMachine\Exception\NoteUnavailableException
      * @expectedExceptionMessage There are no notes available for this value (125.00).
      */
-    public function testWithdraw125AndCatchANoteUnavailableException(){
+    public function testWithdraw125AndCatchANoteUnavailableException()
+    {
         $this->machine->withdraw(125.00);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage The value is not allowed.
+     */
+    public function testWithdrawNegative130AndCatchAInvalidArgumentException()
+    {
+        $this->machine->withdraw(-130.00);
     }
 }

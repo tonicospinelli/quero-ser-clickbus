@@ -1,14 +1,6 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: a2system
- * Date: 14/03/14
- * Time: 21:37
- * To change this template use File | Settings | File Templates.
- */
 
 namespace CashMachine;
-
 
 use CashMachine\Exception\NoteUnavailableException;
 
@@ -35,6 +27,8 @@ class Machine
 
     public function withdraw($value)
     {
+        $this->isValid($value);
+
         $this->hasNoteAvailableFor($value);
 
         $noteIterator = $this->getNoteValues()->getIterator();
@@ -69,6 +63,13 @@ class Machine
             throw new NoteUnavailableException(
                 sprintf('There are no notes available for this value (%01.2f).', $value)
             );
+        }
+    }
+
+    protected function isValid($value)
+    {
+        if (!is_numeric($value) or $value < 0) {
+            throw new \InvalidArgumentException('The value is not allowed.');
         }
     }
 }
