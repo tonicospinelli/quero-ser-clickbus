@@ -13,7 +13,6 @@ class CashMachineTest extends \PHPUnit_Framework_TestCase
      */
     private $machine;
 
-
     protected function setUp()
     {
         parent::setUp();
@@ -58,6 +57,14 @@ class CashMachineTest extends \PHPUnit_Framework_TestCase
     {
         $this->machine->setNoteValues(array(100.00, 20.00));
         $this->machine->withdraw(50.00);
+    }
+
+    public function testMachineHasNotes100And10IWithdraw10AndGetNote10()
+    {
+        $this->machine->setNoteValues(array(100.00, 10.00));
+        $received = $this->machine->withdraw(10.00);
+
+        $this->assertEquals(array(10.00), $received);
     }
 
     /**
