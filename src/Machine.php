@@ -27,6 +27,10 @@ class Machine
 
     public function withdraw($value)
     {
+        if (is_null($value)) {
+            return array();
+        }
+
         $this->isValid($value);
 
         $this->hasNoteAvailableFor($value);
@@ -72,7 +76,7 @@ class Machine
 
     protected function isValid($value)
     {
-        if (!is_numeric($value) or $value < 0) {
+        if (is_numeric($value) and $value < 0) {
             throw new \InvalidArgumentException('The value is not allowed.');
         }
     }

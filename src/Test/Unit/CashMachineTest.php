@@ -67,4 +67,12 @@ class CashMachineTest extends \PHPUnit_Framework_TestCase
     {
         $this->machine->withdraw(-130.00);
     }
+
+
+    public function testWithdrawNullAndReceiveEmptyArray()
+    {
+        $received = $this->machine->withdraw(null);
+
+        $this->assertEquals(array(), $received);
+    }
 }
