@@ -10,7 +10,8 @@
 namespace CashMachine;
 
 
-class Machine {
+class Machine
+{
 
     protected $noteValues;
 
@@ -19,14 +20,33 @@ class Machine {
      */
     public function setNoteValues($noteValues)
     {
-        $this->noteValues = $noteValues;
+        $this->noteValues = new \ArrayObject($noteValues);
     }
 
     /**
-     * @return mixed
+     * @return \ArrayObject
      */
     public function getNoteValues()
     {
         return $this->noteValues;
+    }
+
+    public function withdraw($value)
+    {
+        $noteIterator = $this->getNoteValues()->getIterator();
+
+        $dispenser = new \ArrayObject();
+
+        while ($value > 0 and $noteIterator->valid()) {
+            $note = $noteIterator->current();
+            if($value >= $note){
+                $dispenser->append($note);
+                $value -= $note;
+                continue;
+            }
+            $noteIterator->next();
+        }
+
+        return $dispenser->getArrayCopy();
     }
 }
