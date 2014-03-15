@@ -36,19 +36,6 @@ class CashMachineTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(10, $this->machine->getNoteValues()->offsetGet(3));
     }
 
-    public function provider()
-    {
-        return array(
-            array(array(100)),
-            array(array(100, 50)),
-            array(array(100, 50, 20)),
-            array(array(100, 50, 20, 10)),
-            array(array(50, 20, 10)),
-            array(array(20, 10)),
-            array(array(10)),
-        );
-    }
-
     public function testWithdraw30AndReceive20And10Notes()
     {
         $received = $this->machine->withdraw(30.00);

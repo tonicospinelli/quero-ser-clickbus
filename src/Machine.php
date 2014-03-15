@@ -33,6 +33,10 @@ class Machine
 
         $noteIterator = $this->getNoteValues()->getIterator();
 
+        $noteIterator->uasort(function ($a, $b) {
+            return ($a === $b ? 0 : ($a < $b ? 1 : -1));
+        });
+
         $dispenser = new \ArrayObject();
 
         while ($value > 0 and $noteIterator->valid()) {
@@ -53,7 +57,7 @@ class Machine
         $noteIterator = new \ArrayIterator($this->getNoteValues()->getArrayCopy());
 
         $noteIterator->uasort(function ($a, $b) {
-            return $a > $b ? 1 : -1;
+            return ($a === $b ? 0 : ($a > $b ? 1 : -1));
         });
 
         $noteIterator->rewind();
