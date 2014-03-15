@@ -10,6 +10,8 @@
 namespace CashMachine;
 
 
+use CashMachine\Exception\NoteUnavailableException;
+
 class Machine
 {
 
@@ -33,13 +35,15 @@ class Machine
 
     public function withdraw($value)
     {
+        $this->hasNoteAvailableFor($value);
+
         $noteIterator = $this->getNoteValues()->getIterator();
 
         $dispenser = new \ArrayObject();
 
         while ($value > 0 and $noteIterator->valid()) {
             $note = $noteIterator->current();
-            if($value >= $note){
+            if ($value >= $note) {
                 $dispenser->append($note);
                 $value -= $note;
                 continue;
@@ -48,5 +52,23 @@ class Machine
         }
 
         return $dispenser->getArrayCopy();
+    }
+
+    protected function hasNoteAvailableFor($value)
+    {
+        $noteIterator = new \ArrayIterator($this->getNoteValues()->getArrayCopy());
+
+        $noteIterator->uasort(function ($a, $b) {
+            return $a > $b ? 1 : -1;
+        });
+
+        $noteIterator->rewind();
+        $note = $noteIterator->current();
+        $result = $value % $note;
+        if ($result !== 0) {
+            throw new NoteUnavailableException(
+                sprintf('There are no notes available for this value (%01.2f).', $value)
+            );
+        }
     }
 }
