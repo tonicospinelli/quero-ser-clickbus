@@ -27,23 +27,14 @@ class CashMachineTest extends \PHPUnit_Framework_TestCase
         $this->machine = null;
     }
 
-    public function testSetsANoteValues()
-    {
-        $this->assertCount(4, $this->machine->getNoteValues());
-        $this->assertEquals(100, $this->machine->getNoteValues()->offsetGet(0));
-        $this->assertEquals(50, $this->machine->getNoteValues()->offsetGet(1));
-        $this->assertEquals(20, $this->machine->getNoteValues()->offsetGet(2));
-        $this->assertEquals(10, $this->machine->getNoteValues()->offsetGet(3));
-    }
-
-    public function testWithdraw30AndReceive20And10Notes()
+    public function testIWithdraw30AndGetNotes20And10()
     {
         $received = $this->machine->withdraw(30.00);
 
         $this->assertEquals(array(20.00, 10.00), $received);
     }
 
-    public function testWithdraw80AndReceive50And20And10Notes()
+    public function testIWithdraw80AndGetNotes50And20And10()
     {
         $received = $this->machine->withdraw(80.00);
 
@@ -54,22 +45,32 @@ class CashMachineTest extends \PHPUnit_Framework_TestCase
      * @expectedException \CashMachine\Exception\NoteUnavailableException
      * @expectedExceptionMessage There are no notes available for this value (125.00).
      */
-    public function testWithdraw125AndCatchANoteUnavailableException()
+    public function testITryWithdraw125AndGetANoteUnavailableException()
     {
         $this->machine->withdraw(125.00);
+    }
+
+    /**
+     * @expectedException \CashMachine\Exception\NoteUnavailableException
+     * @expectedExceptionMessage There are no notes available for this value (50.00).
+     */
+    public function testMachineHasNotes100And20ButITryWithdraw50SoGetANoteUnavailableException()
+    {
+        $this->machine->setNoteValues(array(100.00, 20.00));
+        $this->machine->withdraw(50.00);
     }
 
     /**
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage The value is not allowed.
      */
-    public function testWithdrawNegative130AndCatchAInvalidArgumentException()
+    public function testITryWithdrawNegative130AndGetAInvalidArgumentException()
     {
         $this->machine->withdraw(-130.00);
     }
 
 
-    public function testWithdrawNullAndReceiveEmptyArray()
+    public function testITryWithdrawNullAndIReceiveAnEmptyArray()
     {
         $received = $this->machine->withdraw(null);
 
