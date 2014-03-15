@@ -35,25 +35,7 @@ class Machine
 
         $this->hasNoteAvailableFor($value);
 
-        $noteIterator = $this->getNoteValues()->getIterator();
-
-        $noteIterator->uasort(function ($a, $b) {
-            return ($a === $b ? 0 : ($a < $b ? 1 : -1));
-        });
-
-        $dispenser = new \ArrayObject();
-
-        while ($value > 0 and $noteIterator->valid()) {
-            $note = $noteIterator->current();
-            if ($value >= $note) {
-                $dispenser->append($note);
-                $value -= $note;
-                continue;
-            }
-            $noteIterator->next();
-        }
-
-        return $dispenser->getArrayCopy();
+        return $this->getNotesAvailable($value);
     }
 
     protected function hasNoteAvailableFor($value)
@@ -79,5 +61,28 @@ class Machine
         if (is_numeric($value) and $value < 0) {
             throw new \InvalidArgumentException('The value is not allowed.');
         }
+    }
+
+    public function getNotesAvailable($value)
+    {
+        $noteIterator = $this->getNoteValues()->getIterator();
+
+        $noteIterator->uasort(function ($a, $b) {
+            return ($a === $b ? 0 : ($a < $b ? 1 : -1));
+        });
+
+        $notes = new \ArrayObject();
+
+        while ($value > 0 and $noteIterator->valid()) {
+            $note = $noteIterator->current();
+            if ($value >= $note) {
+                $notes->append($note);
+                $value -= $note;
+                continue;
+            }
+            $noteIterator->next();
+        }
+
+        return $notes->getArrayCopy();
     }
 }
