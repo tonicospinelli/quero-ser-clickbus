@@ -25,6 +25,13 @@ class Machine
         return $this->noteValues;
     }
 
+    /**
+     * Get the notes based on value.
+     *
+     * @param float $value
+     *
+     * @return array Return the array with notes.
+     */
     public function withdraw($value)
     {
         if (is_null($value)) {
@@ -38,6 +45,13 @@ class Machine
         return $this->getNotesAvailable($value);
     }
 
+    /**
+     * Get the minimum note and calculate availability for given value.
+     *
+     * @param float $value
+     *
+     * @throws NoteUnavailableException
+     */
     protected function hasNoteAvailableFor($value)
     {
         $noteIterator = new \ArrayIterator($this->getNoteValues()->getArrayCopy());
@@ -56,6 +70,13 @@ class Machine
         }
     }
 
+    /**
+     * Allow positive values.
+     *
+     * @param float $value
+     *
+     * @throws \InvalidArgumentException
+     */
     protected function isValid($value)
     {
         if (is_numeric($value) and $value < 0) {
@@ -63,7 +84,14 @@ class Machine
         }
     }
 
-    public function getNotesAvailable($value)
+    /**
+     * Get all notes based on given value.
+     *
+     * @param float $value
+     *
+     * @return array Return array with all notes.
+     */
+    protected function getNotesAvailable($value)
     {
         $noteIterator = $this->getNoteValues()->getIterator();
 
