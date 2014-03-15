@@ -1,0 +1,4 @@
+/.idea
+/testes/cash-machine/build
+/vendor
+/composer.lock

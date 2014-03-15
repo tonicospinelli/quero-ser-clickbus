@@ -1,5 +1,6 @@
 Sobre a ClickBus
 ================
+
 A ClickBus é um e-commerce de venda de passagens rodoviárias online, empresa do grupo Rocket Internet, uma empresa originalmente alemã focada em lançar startups inovadoras, dentre elas, no Brasil: Dafiti, Mobly, Kanui, Tricae e EasyTaxi, por exemplo. Desde 1999 tem criado mais de 100 empresas líderes de mercado em mais de 40 países, além de 15000 novos postos de trabalho.
 
 Atualmente estamos expandindo nosso negócio para mais de 10 países e estamos procurando bons profissionais que topem esse desafio

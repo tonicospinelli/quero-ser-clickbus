@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false"
+         syntaxCheck="false"
+         verbose="false"
+         bootstrap="./vendor/autoload.php">
+    <testsuites>
+        <testsuite name="Cash Machine Test Suite">
+            <directory>./testes/cash-machine/src/Tests</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist>
+            <directory>./testes/cash-machine/src</directory>
+            <exclude>
+                <directory>./testes/cash-machine/src/Tests</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+    <logging>
+        <log type="coverage-clover" target="build/logs/clover.xml"/>
+        <log type="testdox-text" target="php://stdout"/>
+    </logging>
+</phpunit>

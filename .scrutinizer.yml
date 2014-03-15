@@ -1,0 +1,17 @@
+filter:
+    excluded_paths: [vendor/*, testes/cash-machine/src/Test/*]
+    paths: [testes/cash-machine/src/*]
+
+before_commands:
+    - "composer install --prefer-dist --no-dev"
+
+tools:
+    php_code_coverage:
+        test_command: phpunit -c phpunit.xml.dist
+        config_path: testes/cash-machine
+    php_cpd: true
+    php_code_sniffer:
+        config:
+            standard: PSR2
+    php_pdepend: true
+    php_analyzer: true

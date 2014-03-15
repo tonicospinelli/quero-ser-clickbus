@@ -137,7 +137,7 @@ class Machine
 
         $notes = new \ArrayObject();
 
-        while ($value > 0 and $valid = $noteIterator->valid()) {
+        while ($value > 0 and $noteIterator->valid()) {
             $note = $noteIterator->key();
             $noteAvailable = $noteIterator->current();
             if ($noteAvailable and $value >= $note) {

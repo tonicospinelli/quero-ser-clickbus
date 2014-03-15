@@ -1,0 +1,22 @@
+{
+    "name": "tonicospinelli/cash-machine",
+    "description": "ClickBus Test Skill",
+    "minimum-stability": "stable",
+    "authors": [
+        {
+            "name": "Antonio Spinelli",
+            "email": "tonicospinelli85@gmail.com"
+        }
+    ],
+    "required":{
+        "php": ">=5.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "CashMachine\\": "./testes/cash-machine/src/"
+        }
+    }
+}

@@ -31,7 +31,7 @@ class Account implements AccountInterface
      */
     public function withdraw($value)
     {
-        if (!$this->hasBalance($value)) {
+        if (!$this->hasBalance()) {
             throw new AccountWithoutBalanceException('There are no balance in account');
         }
 

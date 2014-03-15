@@ -1,6 +1,10 @@
 Cash Machine
 ============
 
+[![Build Status](https://travis-ci.org/tonicospinelli/quero-ser-clickbus.png?branch=cash-machine)](https://travis-ci.org/tonicospinelli/quero-ser-clickbus)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/tonicospinelli/quero-ser-clickbus/badges/quality-score.png?s=42196de780d9eca280131b9eb586328e0f3be768)](https://scrutinizer-ci.com/g/tonicospinelli/quero-ser-clickbus/)
+[![Code Coverage](https://scrutinizer-ci.com/g/tonicospinelli/quero-ser-clickbus/badges/coverage.png?s=59c006e45d05389ead7e366c6dbfbda6f29c4ac1)](https://scrutinizer-ci.com/g/tonicospinelli/quero-ser-clickbus/)
+
 O Problema
 ----------
 Desenvolva uma solução que simule a entrega de notas quando um cliente efetuar um saque em um caixa eletrônico. 
