@@ -2,13 +2,15 @@
     "name": "tonicospinelli/cash-machine",
     "description": "ClickBus Test Skill",
     "minimum-stability": "stable",
+    "type": "library",
+    "license": "MIT",
     "authors": [
         {
             "name": "Antonio Spinelli",
             "email": "tonicospinelli85@gmail.com"
         }
     ],
-    "required":{
+    "require": {
         "php": ">=5.3"
     },
     "require-dev": {
