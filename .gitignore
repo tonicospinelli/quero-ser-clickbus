@@ -1,4 +1,5 @@
 /.idea
-/testes/cash-machine/build
+/build
 /vendor
 /composer.lock
+/phpunit.xml

@@ -5,6 +5,7 @@ namespace CashMachine\Test\Unit;
 use CashMachine\Account;
 use CashMachine\Exception\NoteUnavailableException;
 use CashMachine\Machine;
+use CashMachine\NoteCollection;
 
 class CashMachineTest extends \PHPUnit_Framework_TestCase
 {
@@ -19,12 +20,12 @@ class CashMachineTest extends \PHPUnit_Framework_TestCase
         parent::setUp();
         $this->machine = new Machine(
             new Account(),
-            array(
+            new NoteCollection(array(
                 100 => true,
                 50  => true,
                 20  => true,
                 10  => true
-            )
+            ))
         );
     }
 
@@ -55,6 +56,37 @@ class CashMachineTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array(50.00, 20.00, 10.00), $received);
     }
 
+    public function testIWithdraw30AndGetThreeNotesOf10()
+    {
+        $this->machine->setAvailableNotes(new NoteCollection(array(10 => true)));
+        $received = $this->machine->withdraw(30.00);
+
+        $this->assertEquals(array(10.00, 10.00, 10.00), $received);
+    }
+
+    public function testIWithdraw40AndGetTwoNotesOf20()
+    {
+        $this->machine->setAvailableNotes(new NoteCollection(array(20 => true)));
+        $received = $this->machine->withdraw(40.00);
+
+        $this->assertEquals(array(20.00, 20.00), $received);
+    }
+
+    public function testIWithdraw50AndGetOneNoteOf50()
+    {
+        $this->machine->setAvailableNotes(new NoteCollection(array(50 => true)));
+        $received = $this->machine->withdraw(50.00);
+
+        $this->assertEquals(array(50), $received);
+    }
+    public function testIWithdraw150AndGetThreeNotesOf50()
+    {
+        $this->machine->setAvailableNotes(new NoteCollection(array(50 => true)));
+        $received = $this->machine->withdraw(150);
+
+        $this->assertEquals(array(50, 50, 50), $received);
+    }
+
     /**
      * @expectedException \CashMachine\Exception\NoteUnavailableException
      * @expectedExceptionMessage There are no notes available for this value (125.00).
@@ -70,13 +102,13 @@ class CashMachineTest extends \PHPUnit_Framework_TestCase
      */
     public function testMachineHasNotes100And20ButITryWithdraw50SoGetANoteUnavailableException()
     {
-        $this->machine->setAvailableNotes(array(100 => true, 50 => false, 20 => true));
+        $this->machine->setAvailableNotes(new NoteCollection(array(100 => true, 50 => false, 20 => true)));
         $this->machine->withdraw(50.00);
     }
 
     public function testMachineHasNotes100And10IWithdraw10AndGetNote10()
     {
-        $this->machine->setAvailableNotes(array(100 => true, 10 => true));
+        $this->machine->setAvailableNotes(new NoteCollection(array(100 => true, 10 => true)));
         $received = $this->machine->withdraw(10.00);
 
         $this->assertEquals(array(10.00), $received);

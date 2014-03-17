@@ -2,8 +2,6 @@
 
 namespace CashMachine;
 
-use CashMachine\Exception\NoteUnavailableException;
-
 /**
  * Simulation of a Cash Machine when an user withdraw cash from its account.
  * @package CashMachine
@@ -11,6 +9,9 @@ use CashMachine\Exception\NoteUnavailableException;
 class Machine
 {
 
+    /**
+     * @var NoteCollection
+     */
     protected $availableNotes;
 
     /**
@@ -18,10 +19,10 @@ class Machine
      */
     protected $account;
 
-    public function __construct(AccountInterface $account, array $availableNotes = array())
+    public function __construct(AccountInterface $account, NoteCollection $availableNotes = null)
     {
         $this->setAccount($account);
-        $this->setAvailableNotes($availableNotes);
+        !is_null($availableNotes) && $this->setAvailableNotes($availableNotes);
     }
 
     /**
@@ -41,15 +42,15 @@ class Machine
     }
 
     /**
-     * @param array $availableNotes
+     * @param NoteCollection $availableNotes
      */
-    public function setAvailableNotes(array $availableNotes)
+    public function setAvailableNotes(NoteCollection $availableNotes)
     {
-        $this->availableNotes = new \ArrayObject($availableNotes);
+        $this->availableNotes = $availableNotes;
     }
 
     /**
-     * @return \ArrayObject
+     * @return NoteCollection
      */
     public function getAvailableNotes()
     {
@@ -72,38 +73,11 @@ class Machine
 
         $this->isValid($value);
 
-        $this->hasAvailableNotes($value);
+        $this->getAvailableNotes()->isAllowedValue($value);
 
         $this->getAccount()->withdraw($value);
 
-        return $this->convertValueToNotes($value);
-    }
-
-    /**
-     * Get the minimum note and calculate availability for given value.
-     *
-     * @param float $value
-     *
-     * @throws NoteUnavailableException
-     */
-    protected function hasAvailableNotes($value)
-    {
-        $noteIterator = new \ArrayIterator($this->getAvailableNotes()->getArrayCopy());
-
-        $noteIterator->uksort(function ($a, $b) {
-            return ($a === $b ? 0 : ($a > $b ? 1 : -1));
-        });
-
-        $noteIterator->rewind();
-        $note = $noteIterator->key();
-        $available = $noteIterator->current();
-
-        $result = $value % $note;
-        if ($result !== 0 or !$available) {
-            throw new NoteUnavailableException(
-                sprintf('There are no notes available for this value (%01.2f).', $value)
-            );
-        }
+        return $this->getNotesFromValues($value);
     }
 
     /**
@@ -120,6 +94,7 @@ class Machine
         }
     }
 
+
     /**
      * Get all notes based on given value.
      *
@@ -127,27 +102,25 @@ class Machine
      *
      * @return array Return array with all notes.
      */
-    protected function convertValueToNotes($value)
+    public function getNotesFromValues($value)
     {
+        $this->getAvailableNotes()->descSort();
+
         $noteIterator = $this->getAvailableNotes()->getIterator();
 
-        $noteIterator->uksort(function ($a, $b) {
-            return ($a === $b ? 0 : ($a < $b ? 1 : -1));
-        });
-
-        $notes = new \ArrayObject();
-
+        $notes = array();
         while ($value > 0 and $noteIterator->valid()) {
             $note = $noteIterator->key();
             $noteAvailable = $noteIterator->current();
-            if ($noteAvailable and $value >= $note) {
-                $notes->append($note);
-                $value -= $note;
+            if ((int)$noteAvailable > 0 and $value >= $note) {
+                $quantity = intval($value / $note);
+                $notes = array_merge($notes, array_pad(array(), $quantity, $note));
+                $value -= ($note * $quantity);
                 continue;
             }
             $noteIterator->next();
         }
 
-        return $notes->getArrayCopy();
+        return $notes;
     }
 }
