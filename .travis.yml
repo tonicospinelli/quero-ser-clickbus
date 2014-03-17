@@ -11,4 +11,6 @@ before_script:
   - "composer install --no-dev --verbose"
 
 script:
-  - "phpunit -c phpunit.xml.dist testes/cash-machine"
+  - phpunit -c phpunit.xml.dist testes/cash-machine
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --access-token="244840f9533ff5dc774c5d66fcfbcf96eed850266cd49209bdfa3df502523447" --format=php-clover build/logs/coverage.clover
