@@ -77,7 +77,7 @@ class Machine
 
         $this->getAccount()->withdraw($value);
 
-        return $this->getNotesFromValues($value);
+        return $this->getNotesFromValue($value);
     }
 
     /**
@@ -102,7 +102,7 @@ class Machine
      *
      * @return array Return array with all notes.
      */
-    public function getNotesFromValues($value)
+    public function getNotesFromValue($value)
     {
         $this->getAvailableNotes()->descSort();
 
